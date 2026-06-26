@@ -95,6 +95,9 @@ public class LoginView extends JFrame {
         btnIngresar.setBackground(new Color(30, 60, 114));
         btnIngresar.setForeground(Color.WHITE);
         btnIngresar.setFocusPainted(false);
+        btnIngresar.setOpaque(true);
+        btnIngresar.setContentAreaFilled(true);
+        btnIngresar.setBorderPainted(false);
         btnIngresar.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         btnIngresar.setBorder(BorderFactory.createEmptyBorder(10, 30, 10, 30));
         btnIngresar.setPreferredSize(new Dimension(130, 38));
