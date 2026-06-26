@@ -47,7 +47,7 @@ public class ReporteView extends JFrame {
         panelPrincipal.add(lblDesc, BorderLayout.CENTER);
 
         // ── Botones ──────────────────────────────────────────
-        JPanel panelBotones = new JPanel(new FlowLayout(FlowLayout.CENTER, 16, 0));
+        JPanel panelBotones = new JPanel(new FlowLayout(FlowLayout.CENTER, 12, 0));
         panelBotones.setBackground(new Color(240, 242, 248));
         panelBotones.setBorder(BorderFactory.createEmptyBorder(0, 30, 36, 30));
 
@@ -71,7 +71,7 @@ public class ReporteView extends JFrame {
         btn.setBorderPainted(false);
         btn.setFocusPainted(false);
         btn.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-        btn.setPreferredSize(new Dimension(150, 40));
+        btn.setPreferredSize(new Dimension(130, 38));
         return btn;
     }
 
