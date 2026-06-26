@@ -18,7 +18,7 @@ public class ReporteView extends JFrame {
 
     private void initUI() {
         setTitle("ValleTech - Reportes");
-        setSize(400, 280);
+        setSize(460, 260);
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setLocationRelativeTo(null);
         setResizable(false);
