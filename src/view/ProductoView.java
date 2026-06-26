@@ -61,7 +61,7 @@ public class ProductoView extends JFrame {
         txtStock     = crearCampoConLabel(panelForm, "Stock");
 
         // Botones debajo del formulario en grid 2x3
-        JPanel panelBotones = new JPanel(new GridLayout(3, 2, 6, 6));
+        JPanel panelBotones = new JPanel(new GridLayout(2, 2, 6, 6));
         panelBotones.setBackground(Color.WHITE);
         panelBotones.setBorder(BorderFactory.createCompoundBorder(
             BorderFactory.createLineBorder(new Color(210, 210, 220)),
@@ -76,9 +76,9 @@ public class ProductoView extends JFrame {
         panelBotones.add(btnRegistrar);
         panelBotones.add(btnModificar);
         panelBotones.add(btnEliminar);
-        panelBotones.add(btnBuscar);
+        
         panelBotones.add(btnLimpiar);
-        panelBotones.add(new JLabel()); // espacio vacío
+        
 
         panelIzquierda.add(panelForm, BorderLayout.CENTER);
         panelIzquierda.add(panelBotones, BorderLayout.SOUTH);
@@ -101,6 +101,8 @@ public class ProductoView extends JFrame {
             BorderFactory.createEmptyBorder(4, 8, 4, 8)));
         panelBuscar.add(lblBuscar);
         panelBuscar.add(txtBuscar);
+        panelBuscar.add(Box.createHorizontalStrut(8));
+        panelBuscar.add(btnBuscar);
 
         // Tabla
         String[] cols = {"ID", "Nombre", "Categoría", "Precio (S/.)", "Stock"};
