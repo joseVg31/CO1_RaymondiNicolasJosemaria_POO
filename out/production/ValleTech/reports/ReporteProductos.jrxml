@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE jasperReport PUBLIC
+    "-//JasperReports//DTD Report Design//EN"
+    "http://jasperreports.sourceforge.net/dtds/jasperreport.dtd">
+
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports"
+              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports
+              http://jasperreports.sourceforge.net/xsd/jasperreport.xsd"
+              name="ReporteProductos"
+              pageWidth="595" pageHeight="842"
+              columnWidth="555" leftMargin="20" rightMargin="20"
+              topMargin="30" bottomMargin="30"
+              uuid="abc12345-0000-0000-0000-000000000001">
+
+    <!-- Parámetro -->
+    <parameter name="titulo" class="java.lang.String"/>
+
+    <!-- Campos del bean Producto -->
+    <field name="id"        class="java.lang.Integer"/>
+    <field name="nombre"    class="java.lang.String"/>
+    <field name="categoria" class="java.lang.String"/>
+    <field name="precio"    class="java.lang.Double"/>
+    <field name="stock"     class="java.lang.Integer"/>
+
+    <!-- ── TITLE ─────────────────────────────────────── -->
+    <title>
+        <band height="60">
+            <rectangle>
+                <reportElement x="0" y="0" width="555" height="55" backcolor="#1E3C72" mode="Opaque"/>
+            </rectangle>
+            <textField>
+                <reportElement x="0" y="10" width="555" height="35" forecolor="#FFFFFF"/>
+                <textElement textAlignment="Center" verticalAlignment="Middle">
+                    <font fontName="SansSerif" size="18" isBold="true"/>
+                </textElement>
+                <textFieldExpression><![CDATA["ValleTech - Gestión de Productos"]]></textFieldExpression>
+            </textField>
+        </band>
+    </title>
+
+    <!-- ── PAGE HEADER ────────────────────────────────── -->
+    <pageHeader>
+        <band height="30">
+            <textField pattern="dd/MM/yyyy HH:mm">
+                <reportElement x="400" y="5" width="155" height="20" forecolor="#555555"/>
+                <textElement textAlignment="Right">
+                    <font fontName="SansSerif" size="10"/>
+                </textElement>
+                <textFieldExpression><![CDATA[new java.text.SimpleDateFormat("dd/MM/yyyy").format(new java.util.Date())]]></textFieldExpression>
+            </textField>
+            <staticText>
+                <reportElement x="0" y="5" width="200" height="20" forecolor="#555555"/>
+                <textElement><font fontName="SansSerif" size="10"/></textElement>
+                <text><![CDATA[ValleTech S.A.C.]]></text>
+            </staticText>
+        </band>
+    </pageHeader>
+
+    <!-- ── COLUMN HEADER ───────────────────────────────── -->
+    <columnHeader>
+        <band height="28">
+            <rectangle>
+                <reportElement x="0" y="0" width="555" height="28" backcolor="#2E7D5E" mode="Opaque"/>
+            </rectangle>
+            <staticText>
+                <reportElement x="5"   y="6" width="50"  height="16" forecolor="#FFFFFF"/>
+                <textElement><font fontName="SansSerif" size="11" isBold="true"/></textElement>
+                <text><![CDATA[ID]]></text>
+            </staticText>
+            <staticText>
+                <reportElement x="55"  y="6" width="180" height="16" forecolor="#FFFFFF"/>
+                <textElement><font fontName="SansSerif" size="11" isBold="true"/></textElement>
+                <text><![CDATA[NOMBRE]]></text>
+            </staticText>
+            <staticText>
+                <reportElement x="235" y="6" width="130" height="16" forecolor="#FFFFFF"/>
+                <textElement><font fontName="SansSerif" size="11" isBold="true"/></textElement>
+                <text><![CDATA[CATEGORÍA]]></text>
+            </staticText>
+            <staticText>
+                <reportElement x="365" y="6" width="90"  height="16" forecolor="#FFFFFF"/>
+                <textElement textAlignment="Right"><font fontName="SansSerif" size="11" isBold="true"/></textElement>
+                <text><![CDATA[PRECIO]]></text>
+            </staticText>
+            <staticText>
+                <reportElement x="455" y="6" width="95"  height="16" forecolor="#FFFFFF"/>
+                <textElement textAlignment="Right"><font fontName="SansSerif" size="11" isBold="true"/></textElement>
+                <text><![CDATA[STOCK]]></text>
+            </staticText>
+        </band>
+    </columnHeader>
+
+    <!-- ── DETAIL ─────────────────────────────────────── -->
+    <detail>
+        <band height="22" splitType="Stretch">
+            <!-- Fondo alternado -->
+            <rectangle>
+                <reportElement x="0" y="0" width="555" height="22" backcolor="#F0F4FF" mode="Opaque"
+                               isPrintWhenDetailOverflows="false">
+                    <printWhenExpression><![CDATA[$V{REPORT_COUNT} % 2 == 0]]></printWhenExpression>
+                </reportElement>
+            </rectangle>
+
+            <textField>
+                <reportElement x="5"   y="4" width="50"  height="14"/>
+                <textElement><font fontName="SansSerif" size="10"/></textElement>
+                <textFieldExpression><![CDATA[$F{id}]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement x="55"  y="4" width="180" height="14"/>
+                <textElement><font fontName="SansSerif" size="10"/></textElement>
+                <textFieldExpression><![CDATA[$F{nombre}]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement x="235" y="4" width="130" height="14"/>
+                <textElement><font fontName="SansSerif" size="10"/></textElement>
+                <textFieldExpression><![CDATA[$F{categoria}]]></textFieldExpression>
+            </textField>
+            <textField pattern="#,##0.00">
+                <reportElement x="365" y="4" width="90"  height="14"/>
+                <textElement textAlignment="Right"><font fontName="SansSerif" size="10"/></textElement>
+                <textFieldExpression><![CDATA["S/. " + new java.text.DecimalFormat("#,##0.00").format($F{precio})]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement x="455" y="4" width="95"  height="14"/>
+                <textElement textAlignment="Right"><font fontName="SansSerif" size="10"/></textElement>
+                <textFieldExpression><![CDATA[$F{stock}]]></textFieldExpression>
+            </textField>
+        </band>
+    </detail>
+
+    <!-- ── PAGE FOOTER ────────────────────────────────── -->
+    <pageFooter>
+        <band height="25">
+            <line>
+                <reportElement x="0" y="0" width="555" height="1" forecolor="#CCCCCC"/>
+            </line>
+            <textField>
+                <reportElement x="0" y="5" width="280" height="16" forecolor="#888888"/>
+                <textElement><font fontName="SansSerif" size="9"/></textElement>
+                <textFieldExpression><![CDATA["Total de productos: " + $V{REPORT_COUNT}]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement x="280" y="5" width="275" height="16" forecolor="#888888"/>
+                <textElement textAlignment="Right"><font fontName="SansSerif" size="9"/></textElement>
+                <textFieldExpression><![CDATA["Página " + $V{PAGE_NUMBER}]]></textFieldExpression>
+            </textField>
+        </band>
+    </pageFooter>
+
+</jasperReport>

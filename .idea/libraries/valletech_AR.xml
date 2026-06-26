@@ -1,0 +1,10 @@
+<component name="libraryTable">
+  <library name="valletech_AR">
+    <CLASSES>
+      <root url="file://$PROJECT_DIR$/../valletech_AR" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+    <jarDirectory url="file://$PROJECT_DIR$/../valletech_AR" recursive="false" />
+  </library>
+</component>
