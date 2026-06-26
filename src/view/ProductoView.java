@@ -5,6 +5,7 @@ import controller.ProductoController;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.JTableHeader;
 import java.awt.*;
 
 public class ProductoView extends JFrame {
@@ -22,60 +23,55 @@ public class ProductoView extends JFrame {
 
     private void initUI() {
         setTitle("ValleTech - CRUD de Productos");
-        setSize(950, 580);
+        setSize(960, 560);
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setLocationRelativeTo(null);
+        getContentPane().setBackground(new Color(245, 247, 250));
 
-        JPanel panelPrincipal = new JPanel(new BorderLayout(10, 10));
+        JPanel panelPrincipal = new JPanel(new BorderLayout(12, 0));
         panelPrincipal.setBackground(new Color(245, 247, 250));
-        panelPrincipal.setBorder(BorderFactory.createEmptyBorder(12, 12, 12, 12));
+        panelPrincipal.setBorder(BorderFactory.createEmptyBorder(14, 14, 14, 14));
 
-        // ── IZQUIERDA: Formulario ─────────────────────────────
-        JPanel panelForm = new JPanel(new GridBagLayout());
+        // ══ IZQUIERDA: Formulario ══════════════════════════════
+        JPanel panelForm = new JPanel();
+        panelForm.setLayout(new BoxLayout(panelForm, BoxLayout.Y_AXIS));
         panelForm.setBackground(Color.WHITE);
-        panelForm.setBorder(BorderFactory.createTitledBorder(
-            BorderFactory.createLineBorder(new Color(200, 200, 210)),
-            "Datos del Producto"));
-        panelForm.setPreferredSize(new Dimension(260, 0));
+        panelForm.setBorder(BorderFactory.createCompoundBorder(
+            BorderFactory.createLineBorder(new Color(210, 210, 220)),
+            BorderFactory.createEmptyBorder(16, 16, 16, 16)));
+        panelForm.setPreferredSize(new Dimension(240, 0));
 
-        GridBagConstraints gbc = new GridBagConstraints();
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-        gbc.anchor = GridBagConstraints.NORTHWEST;
-        gbc.insets = new Insets(6, 10, 6, 10);
-        gbc.weightx = 1.0;
+        // Título del formulario
+        JLabel lblTitulo = new JLabel("Datos del Producto");
+        lblTitulo.setFont(new Font("Segoe UI", Font.BOLD, 14));
+        lblTitulo.setForeground(new Color(30, 60, 114));
+        lblTitulo.setAlignmentX(Component.LEFT_ALIGNMENT);
+        panelForm.add(lblTitulo);
+        panelForm.add(Box.createVerticalStrut(14));
 
-        txtId        = crearCampo();  txtId.setEditable(false); txtId.setBackground(new Color(240,240,240));
-        txtNombre    = crearCampo();
-        txtCategoria = crearCampo();
-        txtPrecio    = crearCampo();
-        txtStock     = crearCampo();
+        // Campo ID oculto (solo para uso interno)
+        txtId = new JTextField();
+        txtId.setVisible(false);
 
-        int row = 0;
-        agregarFila(panelForm, gbc, "ID:",         txtId,        row++);
-        agregarFila(panelForm, gbc, "Nombre:",     txtNombre,    row++);
-        agregarFila(panelForm, gbc, "Categoría:",  txtCategoria, row++);
-        agregarFila(panelForm, gbc, "Precio:",     txtPrecio,    row++);
-        agregarFila(panelForm, gbc, "Stock:",      txtStock,     row++);
+        txtNombre    = crearCampoConLabel(panelForm, "Nombre");
+        txtCategoria = crearCampoConLabel(panelForm, "Categoría");
+        txtPrecio    = crearCampoConLabel(panelForm, "Precio (S/.)");
+        txtStock     = crearCampoConLabel(panelForm, "Stock");
 
-        // relleno para empujar todo arriba
-        gbc.gridx = 0; gbc.gridy = row;
-        gbc.weighty = 1.0;
-        gbc.gridwidth = 2;
-        panelForm.add(Box.createVerticalGlue(), gbc);
-
+        panelForm.add(Box.createVerticalGlue());
         panelPrincipal.add(panelForm, BorderLayout.WEST);
 
-        // ── DERECHA: Botones ──────────────────────────────────
+        // ══ DERECHA: Botones ═══════════════════════════════════
         JPanel panelBotones = new JPanel(new GridLayout(5, 1, 0, 10));
         panelBotones.setBackground(new Color(245, 247, 250));
-        panelBotones.setBorder(BorderFactory.createEmptyBorder(5, 8, 5, 0));
-        panelBotones.setPreferredSize(new Dimension(130, 0));
+        panelBotones.setBorder(BorderFactory.createEmptyBorder(0, 10, 0, 0));
+        panelBotones.setPreferredSize(new Dimension(120, 0));
 
-        btnRegistrar = crearBoton("Registrar",  new Color(0, 130, 80));
+        btnRegistrar = crearBoton("Registrar",  new Color(34, 139, 74));
         btnModificar = crearBoton("Modificar",  new Color(25, 80, 170));
         btnEliminar  = crearBoton("Eliminar",   new Color(190, 40, 40));
         btnBuscar    = crearBoton("Buscar",     new Color(90, 60, 170));
-        btnLimpiar   = crearBoton("Limpiar",    new Color(80, 80, 90));
+        btnLimpiar   = crearBoton("Limpiar",    new Color(70, 70, 80));
 
         panelBotones.add(btnRegistrar);
         panelBotones.add(btnModificar);
@@ -85,8 +81,8 @@ public class ProductoView extends JFrame {
 
         panelPrincipal.add(panelBotones, BorderLayout.EAST);
 
-        // ── CENTRO: Buscador + Tabla ──────────────────────────
-        JPanel panelCentro = new JPanel(new BorderLayout(0, 8));
+        // ══ CENTRO: Buscador + Tabla ═══════════════════════════
+        JPanel panelCentro = new JPanel(new BorderLayout(0, 10));
         panelCentro.setBackground(new Color(245, 247, 250));
 
         // Buscador
@@ -94,40 +90,53 @@ public class ProductoView extends JFrame {
         panelBuscar.setBackground(new Color(245, 247, 250));
         JLabel lblBuscar = new JLabel("Buscar por nombre:  ");
         lblBuscar.setFont(new Font("Segoe UI", Font.PLAIN, 13));
-        txtBuscar = new JTextField(22);
+        txtBuscar = new JTextField(24);
         txtBuscar.setFont(new Font("Segoe UI", Font.PLAIN, 13));
+        txtBuscar.setPreferredSize(new Dimension(0, 30));
         txtBuscar.setBorder(BorderFactory.createCompoundBorder(
-            BorderFactory.createLineBorder(new Color(180,180,200)),
-            BorderFactory.createEmptyBorder(4,8,4,8)));
+            BorderFactory.createLineBorder(new Color(180, 180, 200)),
+            BorderFactory.createEmptyBorder(4, 8, 4, 8)));
         panelBuscar.add(lblBuscar);
         panelBuscar.add(txtBuscar);
 
         // Tabla
-        String[] cols = {"ID", "Nombre", "Categoría", "Precio", "Stock"};
+        String[] cols = {"ID", "Nombre", "Categoría", "Precio (S/.)", "Stock"};
         modeloTabla = new DefaultTableModel(cols, 0) {
             @Override public boolean isCellEditable(int r, int c) { return false; }
         };
         tabla = new JTable(modeloTabla);
         tabla.setFont(new Font("Segoe UI", Font.PLAIN, 13));
-        tabla.setRowHeight(26);
+        tabla.setRowHeight(28);
         tabla.setShowGrid(false);
         tabla.setIntercellSpacing(new Dimension(0, 0));
-        tabla.setSelectionBackground(new Color(200, 220, 255));
+        tabla.setSelectionBackground(new Color(195, 215, 255));
         tabla.setSelectionForeground(Color.BLACK);
+        tabla.setFillsViewportHeight(true);
 
-        // Header
-        tabla.getTableHeader().setFont(new Font("Segoe UI", Font.BOLD, 13));
-        tabla.getTableHeader().setBackground(new Color(30, 60, 114));
-        tabla.getTableHeader().setForeground(Color.WHITE);
-        tabla.getTableHeader().setReorderingAllowed(false);
-        tabla.getTableHeader().setPreferredSize(new Dimension(0, 30));
-
-        // Ancho columnas
-        tabla.getColumnModel().getColumn(0).setPreferredWidth(40);
-        tabla.getColumnModel().getColumn(1).setPreferredWidth(190);
-        tabla.getColumnModel().getColumn(2).setPreferredWidth(120);
-        tabla.getColumnModel().getColumn(3).setPreferredWidth(80);
-        tabla.getColumnModel().getColumn(4).setPreferredWidth(60);
+        // Header azul
+        JTableHeader header = tabla.getTableHeader();
+        header.setFont(new Font("Segoe UI", Font.BOLD, 13));
+        header.setBackground(new Color(30, 60, 114));
+        header.setForeground(Color.WHITE);
+        header.setPreferredSize(new Dimension(0, 32));
+        header.setReorderingAllowed(false);
+        header.setDefaultRenderer(new DefaultTableCellRenderer() {
+            {
+                setHorizontalAlignment(CENTER);
+                setOpaque(true);
+            }
+            @Override
+            public Component getTableCellRendererComponent(JTable t, Object v,
+                    boolean sel, boolean foc, int row, int col) {
+                super.getTableCellRendererComponent(t, v, sel, foc, row, col);
+                setBackground(new Color(30, 60, 114));
+                setForeground(Color.WHITE);
+                setFont(new Font("Segoe UI", Font.BOLD, 13));
+                setBorder(BorderFactory.createMatteBorder(0, 0, 0, 1, new Color(60, 90, 150)));
+                setText(v != null ? v.toString() : "");
+                return this;
+            }
+        });
 
         // Filas alternas
         tabla.setDefaultRenderer(Object.class, new DefaultTableCellRenderer() {
@@ -135,14 +144,27 @@ public class ProductoView extends JFrame {
             public Component getTableCellRendererComponent(JTable t, Object v,
                     boolean sel, boolean foc, int row, int col) {
                 super.getTableCellRendererComponent(t, v, sel, foc, row, col);
-                if (!sel) setBackground(row % 2 == 0 ? Color.WHITE : new Color(240, 244, 255));
-                setBorder(BorderFactory.createEmptyBorder(0, 8, 0, 8));
+                if (sel) {
+                    setBackground(new Color(195, 215, 255));
+                } else {
+                    setBackground(row % 2 == 0 ? Color.WHITE : new Color(242, 245, 255));
+                }
+                setBorder(BorderFactory.createEmptyBorder(0, 10, 0, 10));
+                setForeground(new Color(40, 40, 60));
                 return this;
             }
         });
 
+        // Anchos de columna
+        tabla.getColumnModel().getColumn(0).setPreferredWidth(45);
+        tabla.getColumnModel().getColumn(1).setPreferredWidth(200);
+        tabla.getColumnModel().getColumn(2).setPreferredWidth(130);
+        tabla.getColumnModel().getColumn(3).setPreferredWidth(100);
+        tabla.getColumnModel().getColumn(4).setPreferredWidth(70);
+
         JScrollPane scroll = new JScrollPane(tabla);
-        scroll.setBorder(BorderFactory.createLineBorder(new Color(200, 200, 210)));
+        scroll.setBorder(BorderFactory.createLineBorder(new Color(200, 200, 215)));
+        scroll.getViewport().setBackground(Color.WHITE);
 
         panelCentro.add(panelBuscar, BorderLayout.NORTH);
         panelCentro.add(scroll, BorderLayout.CENTER);
@@ -151,28 +173,25 @@ public class ProductoView extends JFrame {
         add(panelPrincipal);
     }
 
-    private JTextField crearCampo() {
-        JTextField f = new JTextField();
-        f.setFont(new Font("Segoe UI", Font.PLAIN, 13));
-        f.setBorder(BorderFactory.createCompoundBorder(
-            BorderFactory.createLineBorder(new Color(180, 180, 200)),
-            BorderFactory.createEmptyBorder(5, 8, 5, 8)));
-        f.setPreferredSize(new Dimension(160, 30));
-        return f;
-    }
+    private JTextField crearCampoConLabel(JPanel panel, String labelText) {
+        JLabel lbl = new JLabel(labelText);
+        lbl.setFont(new Font("Segoe UI", Font.PLAIN, 12));
+        lbl.setForeground(new Color(80, 80, 110));
+        lbl.setAlignmentX(Component.LEFT_ALIGNMENT);
+        panel.add(lbl);
+        panel.add(Box.createVerticalStrut(4));
 
-    private void agregarFila(JPanel p, GridBagConstraints gbc, String label, JTextField campo, int fila) {
-        JLabel lbl = new JLabel(label);
-        lbl.setFont(new Font("Segoe UI", Font.PLAIN, 13));
-        lbl.setForeground(new Color(50, 50, 80));
-        gbc.gridx = 0; gbc.gridy = fila; gbc.gridwidth = 2; gbc.weighty = 0;
-        p.add(lbl, gbc);
-        gbc.gridy = fila; // mismo espacio, siguiente col
-        // label encima del campo
-        gbc.gridy = fila * 2;
-        p.add(lbl, gbc);
-        gbc.gridy = fila * 2 + 1;
-        p.add(campo, gbc);
+        JTextField campo = new JTextField();
+        campo.setFont(new Font("Segoe UI", Font.PLAIN, 13));
+        campo.setMaximumSize(new Dimension(Integer.MAX_VALUE, 32));
+        campo.setPreferredSize(new Dimension(200, 32));
+        campo.setAlignmentX(Component.LEFT_ALIGNMENT);
+        campo.setBorder(BorderFactory.createCompoundBorder(
+            BorderFactory.createLineBorder(new Color(190, 190, 210)),
+            BorderFactory.createEmptyBorder(5, 8, 5, 8)));
+        panel.add(campo);
+        panel.add(Box.createVerticalStrut(12));
+        return campo;
     }
 
     private JButton crearBoton(String texto, Color color) {
