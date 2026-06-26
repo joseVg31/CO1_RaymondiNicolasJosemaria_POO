@@ -37,13 +37,12 @@ public class ProductoView extends JFrame {
         panelIzquierda.setBackground(new Color(245, 247, 250));
         panelIzquierda.setPreferredSize(new Dimension(240, 0));
 
-        // Formulario
         JPanel panelForm = new JPanel();
         panelForm.setLayout(new BoxLayout(panelForm, BoxLayout.Y_AXIS));
         panelForm.setBackground(Color.WHITE);
         panelForm.setBorder(BorderFactory.createCompoundBorder(
-            BorderFactory.createLineBorder(new Color(210, 210, 220)),
-            BorderFactory.createEmptyBorder(14, 14, 14, 14)));
+                BorderFactory.createLineBorder(new Color(210, 210, 220)),
+                BorderFactory.createEmptyBorder(14, 14, 14, 14)));
 
         JLabel lblTitulo = new JLabel("Datos del Producto");
         lblTitulo.setFont(new Font("Segoe UI", Font.BOLD, 13));
@@ -60,25 +59,22 @@ public class ProductoView extends JFrame {
         txtPrecio    = crearCampoConLabel(panelForm, "Precio (S/.)");
         txtStock     = crearCampoConLabel(panelForm, "Stock");
 
-        // Botones debajo del formulario en grid 2x3
+        // Botones panel izquierdo
         JPanel panelBotones = new JPanel(new GridLayout(2, 2, 6, 6));
         panelBotones.setBackground(Color.WHITE);
         panelBotones.setBorder(BorderFactory.createCompoundBorder(
-            BorderFactory.createLineBorder(new Color(210, 210, 220)),
-            BorderFactory.createEmptyBorder(10, 10, 10, 10)));
+                BorderFactory.createLineBorder(new Color(210, 210, 220)),
+                BorderFactory.createEmptyBorder(10, 10, 10, 10)));
 
         btnRegistrar = crearBoton("Registrar", new Color(34, 139, 74));
         btnModificar = crearBoton("Modificar", new Color(25, 80, 170));
         btnEliminar  = crearBoton("Eliminar",  new Color(190, 40, 40));
-        btnBuscar    = crearBoton("Buscar",    new Color(90, 60, 170));
         btnLimpiar   = crearBoton("Limpiar",   new Color(70, 70, 80));
 
         panelBotones.add(btnRegistrar);
         panelBotones.add(btnModificar);
         panelBotones.add(btnEliminar);
-        
         panelBotones.add(btnLimpiar);
-        
 
         panelIzquierda.add(panelForm, BorderLayout.CENTER);
         panelIzquierda.add(panelBotones, BorderLayout.SOUTH);
@@ -88,21 +84,35 @@ public class ProductoView extends JFrame {
         JPanel panelCentro = new JPanel(new BorderLayout(0, 10));
         panelCentro.setBackground(new Color(245, 247, 250));
 
-        // Buscador
-        JPanel panelBuscar = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
+        // ── BUSCADOR con botón visible ──
+        JPanel panelBuscar = new JPanel(new BorderLayout(8, 0));
         panelBuscar.setBackground(new Color(245, 247, 250));
+
         JLabel lblBuscar = new JLabel("Buscar por nombre:  ");
         lblBuscar.setFont(new Font("Segoe UI", Font.PLAIN, 13));
-        txtBuscar = new JTextField(24);
+
+        txtBuscar = new JTextField();
         txtBuscar.setFont(new Font("Segoe UI", Font.PLAIN, 13));
-        txtBuscar.setPreferredSize(new Dimension(0, 30));
+        txtBuscar.setPreferredSize(new Dimension(0, 32));
         txtBuscar.setBorder(BorderFactory.createCompoundBorder(
-            BorderFactory.createLineBorder(new Color(180, 180, 200)),
-            BorderFactory.createEmptyBorder(4, 8, 4, 8)));
-        panelBuscar.add(lblBuscar);
-        panelBuscar.add(txtBuscar);
-        panelBuscar.add(Box.createHorizontalStrut(8));
-        panelBuscar.add(btnBuscar);
+                BorderFactory.createLineBorder(new Color(180, 180, 200)),
+                BorderFactory.createEmptyBorder(4, 8, 4, 8)));
+
+        // Botón Buscar con ancho fijo para que sea visible en BorderLayout.EAST
+        btnBuscar = new JButton("Buscar");
+        btnBuscar.setFont(new Font("Segoe UI", Font.BOLD, 12));
+        btnBuscar.setBackground(new Color(90, 60, 170));
+        btnBuscar.setForeground(Color.WHITE);
+        btnBuscar.setOpaque(true);
+        btnBuscar.setContentAreaFilled(true);
+        btnBuscar.setBorderPainted(false);
+        btnBuscar.setFocusPainted(false);
+        btnBuscar.setPreferredSize(new Dimension(90, 32)); // ancho fijo = siempre visible
+        btnBuscar.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+
+        panelBuscar.add(lblBuscar, BorderLayout.WEST);
+        panelBuscar.add(txtBuscar, BorderLayout.CENTER);
+        panelBuscar.add(btnBuscar, BorderLayout.EAST);
 
         // Tabla
         String[] cols = {"ID", "Nombre", "Categoría", "Precio (S/.)", "Stock"};
@@ -126,7 +136,7 @@ public class ProductoView extends JFrame {
         header.setDefaultRenderer(new DefaultTableCellRenderer() {
             @Override
             public Component getTableCellRendererComponent(JTable t, Object v,
-                    boolean sel, boolean foc, int row, int col) {
+                                                           boolean sel, boolean foc, int row, int col) {
                 super.getTableCellRendererComponent(t, v, sel, foc, row, col);
                 setBackground(new Color(30, 60, 114));
                 setForeground(Color.WHITE);
@@ -142,7 +152,7 @@ public class ProductoView extends JFrame {
         tabla.setDefaultRenderer(Object.class, new DefaultTableCellRenderer() {
             @Override
             public Component getTableCellRendererComponent(JTable t, Object v,
-                    boolean sel, boolean foc, int row, int col) {
+                                                           boolean sel, boolean foc, int row, int col) {
                 super.getTableCellRendererComponent(t, v, sel, foc, row, col);
                 if (sel) {
                     setBackground(new Color(195, 215, 255));
@@ -186,8 +196,8 @@ public class ProductoView extends JFrame {
         campo.setPreferredSize(new Dimension(200, 30));
         campo.setAlignmentX(Component.LEFT_ALIGNMENT);
         campo.setBorder(BorderFactory.createCompoundBorder(
-            BorderFactory.createLineBorder(new Color(190, 190, 210)),
-            BorderFactory.createEmptyBorder(4, 8, 4, 8)));
+                BorderFactory.createLineBorder(new Color(190, 190, 210)),
+                BorderFactory.createEmptyBorder(4, 8, 4, 8)));
         panel.add(campo);
         panel.add(Box.createVerticalStrut(10));
         return campo;
